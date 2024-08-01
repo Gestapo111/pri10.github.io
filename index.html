@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluación: El Mundo de los Genes (Biología)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            color: #333;
+        }
+        .quiz-container {
+            background-color: #fff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 800px;
+        }
+        .question {
+            margin-bottom: 15px;
+        }
+        .options {
+            list-style-type: none;
+            padding: 0;
+        }
+        .options li {
+            margin-bottom: 10px;
+        }
+        button {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #results {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            width: 100%;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Evaluación: El Mundo de los Genes (Biología)</h1>
+    <div class="quiz-container">
+        <div id="quiz"></div>
+        <button id="submit">Enviar respuestas</button>
+        <div id="results"></div>
+    </div>
+    <footer>
+        &copy; Derechos Reservados Prof. Alberto Sanchez
+    </footer>
+    <script>
+        const quizData = [
+            {
+                question: "¿Qué es un gen?",
+                answers: [
+                    { text: "Una unidad de información hereditaria en el ADN.", correct: true },
+                    { text: "Una molécula de proteína.", correct: false },
+                    { text: "Un organelo celular.", correct: false }
+                ]
+            },
+            {
+                question: "¿Qué es el ADN?",
+                answers: [
+                    { text: "La molécula que contiene la información genética de un organismo.", correct: true },
+                    { text: "La molécula que produce energía.", correct: false },
+                    { text: "Un tipo de proteína.", correct: false }
+                ]
+            },
+            {
+                question: "¿Qué es un cromosoma?",
+                answers: [
+                    { text: "Una estructura que contiene ADN y proteínas.", correct: true },
+                    { text: "Un tipo de célula.", correct: false },
+                    { text: "Un organelo celular.", correct: false }
+                ]
+            },
+            {
+                question: "¿Qué es la replicación del ADN?",
+                answers: [
+                    { text: "El proceso por el cual se duplica el ADN antes de la división celular.", correct: true },
+                    { text: "El proceso por el cual se transcribe el ADN en ARN.", correct: false },
+                    { text: "El proceso por el cual se traduce el ARN en proteínas.", correct: false }
+                ]
+            },
+            {
+                question: "¿Qué es la transcripción?",
+                answers: [
+                    { text: "El proceso por el cual el ADN se copia en ARN.", correct: true },
+                    { text: "El proceso por el cual el ARN se traduce en proteínas.", correct: false },
+                    { text: "El proceso por el cual el ADN se duplica.", correct: false }
+                ]
+            },
+            {
+                question: "¿Qué es la traducción?",
+                answers: [
+                    { text: "El proceso por el cual el ARN se traduce en proteínas.", correct: true },
+                    { text: "El proceso por el cual el ADN se copia en ARN.", correct: false },
+                    { text: "El proceso por el cual el ADN se duplica.", correct: false }
+                ]
+            },
+            {
+                question: "¿Qué es un codón?",
+                answers: [
+                    { text: "Un grupo de tres nucleótidos en el ARN que especifica un aminoácido.", correct: true },
+                    { text: "Un tipo de proteína.", correct: false },
+                    { text: "Una molécula de ADN.", correct: false }
+                ]
+            },
+            {
+                question: "¿Qué es una mutación?",
+                answers: [
+                    { text: "Un cambio en la secuencia de nucleótidos en el ADN.", correct: true },
+                    { text: "Una fusión de dos células.", correct: false },
+                    { text: "Una división celular.", correct: false }
+                ]
+            },
+            {
+                question: "¿Qué es la herencia mendeliana?",
+                answers: [
+                    { text: "El patrón de herencia de rasgos basado en la transmisión de alelos dominantes y recesivos.", correct: true },
+                    { text: "El patrón de herencia de rasgos basado en la transmisión de caracteres adquiridos.", correct: false },
+                    { text: "El patrón de herencia de rasgos basado en la selección natural.", correct: false }
+                ]
+            },
+            {
+                question: "¿Qué es un alelo?",
+                answers: [
+                    { text: "Una de las formas alternativas de un gen que puede existir en un locus específico.", correct: true },
+                    { text: "Una molécula de proteína.", correct: false },
+                    { text: "Un organelo celular.", correct: false }
+                ]
+            },
+            {
+                question: "¿Qué es un fenotipo?",
+                answers: [
+                    { text: "La expresión observable de un rasgo en un organismo.", correct: true },
+                    { text: "La secuencia de ADN de un organismo.", correct: false },
+                    { text: "La cantidad de energía en un organismo.", correct: false }
+                ]
+            },
+            {
+                question: "¿Qué es un genotipo?",
+                answers: [
+                    { text: "La composición genética de un organismo.", correct: true },
+                    { text: "La expresión observable de un rasgo en un organismo.", correct: false },
+                    { text: "La cantidad de energía en un organismo.", correct: false }
+                ]
+            },
+            {
+                question: "¿Qué es la codominancia?",
+                answers: [
+                    { text: "Un patrón de herencia en el que ambos alelos de un gen se expresan en el fenotipo.", correct: true },
+                    { text: "Un patrón de herencia en el que un alelo domina sobre el otro.", correct: false },
+                    { text: "Un patrón de herencia en el que ninguno de los alelos se expresa.", correct: false }
+                ]
+            },
+            {
+                question: "¿Qué es la herencia poligénica?",
+                answers: [
+                    { text: "Un patrón de herencia en el que múltiples genes contribuyen a un rasgo.", correct: true },
+                    { text: "Un patrón de herencia en el que un solo gen contribuye a un rasgo.", correct: false },
+                    { text: "Un patrón de herencia en el que los caracteres adquiridos se transmiten.", correct: false }
+                ]
+            },
+            {
+                question: "¿Qué es la epistasis?",
+                answers: [
+                    { text: "Una interacción entre genes en la que un gen enmascara o modifica la expresión de otro gen.", correct: true },
+                    { text: "Un patrón de herencia en el que ambos alelos se expresan.", correct: false },
+                    { text: "Un patrón de herencia en el que un alelo domina sobre el otro.", correct: false }
+                ]
+            },
+            {
+                question: "¿Qué es la pleiotropía?",
+                answers: [
+                    { text: "Un solo gen que influye en múltiples rasgos fenotípicos.", correct: true },
+                    { text: "Múltiples genes que influyen en un solo rasgo.", correct: false },
+                    { text: "La expresión de ambos alelos de un gen.", correct: false }
+                ]
+            },
+            {
+                question: "¿Qué es el cruce entrecruzado (crossing-over)?",
+                answers: [
+                    { text: "El intercambio de segmentos de ADN entre cromosomas homólogos durante la meiosis.", correct: true },
+                    { text: "La replicación del ADN durante la mitosis.", correct: false },
+                    { text: "La transcripción del ADN en ARN.", correct: false }
+                ]
+            },
+            {
+                question: "¿Qué es la herencia ligada al sexo?",
+                answers: [
+                    { text: "La transmisión de genes localizados en los cromosomas sexuales.", correct: true },
+                    { text: "La transmisión de genes localizados en los cromosomas autosómicos.", correct: false },
+                    { text: "La transmisión de genes mutados.", correct: false }
+                ]
+            },
+            {
+                question: "¿Qué es un pedigrí?",
+                answers: [
+                    { text: "Un diagrama que muestra la herencia de un rasgo a través de varias generaciones de una familia.", correct: true },
+                    { text: "Un diagrama que muestra la estructura de una célula.", correct: false },
+                    { text: "Un mapa que muestra la distribución de una especie.", correct: false }
+                ]
+            },
+            {
+                question: "¿Qué es la terapia génica?",
+                answers: [
+                    { text: "Una técnica experimental que utiliza genes para tratar o prevenir enfermedades.", correct: true },
+                    { text: "Una técnica para clonar organismos.", correct: false },
+                    { text: "Una técnica para mapear el genoma humano.", correct: false }
+                ]
+            },
+            {
+                question: "¿Qué es el Proyecto Genoma Humano?",
+                answers: [
+                    { text: "Un proyecto de investigación internacional para mapear y secuenciar todos los genes del genoma humano.", correct: true },
+                    { text: "Un proyecto para clonar organismos humanos.", correct: false },
+                    { text: "Un proyecto para desarrollar nuevos medicamentos.", correct: false }
+                ]
+            },
+            {
+                question: "¿Qué es la clonación?",
+                answers: [
+                    { text: "La producción de organismos genéticamente idénticos a partir de una célula.", correct: true },
+                    { text: "La producción de nuevas especies a partir de híbridos.", correct: false },
+                    { text: "La producción de nuevos medicamentos a partir de bacterias.", correct: false }
+                ]
+            },
+            {
+                question: "¿Qué es la PCR (Reacción en Cadena de la Polimerasa)?",
+                answers: [
+                    { text: "Una técnica para amplificar secuencias específicas de ADN.", correct: true },
+                    { text: "Una técnica para clonar organismos.", correct: false },
+                    { text: "Una técnica para mapear el genoma humano.", correct: false }
+                ]
+            },
+            {
+                question: "¿Qué es la ingeniería genética?",
+                answers: [
+                    { text: "La manipulación directa de los genes de un organismo usando biotecnología.", correct: true },
+                    { text: "La creación de nuevos organismos a partir de híbridos.", correct: false },
+                    { text: "La producción de nuevos medicamentos a partir de bacterias.", correct: false }
+                ]
+            },
+            {
+                question: "¿Qué es un plásmido?",
+                answers: [
+                    { text: "Una pequeña molécula de ADN circular que se encuentra en las bacterias y se utiliza en la ingeniería genética.", correct: true },
+                    { text: "Un tipo de virus que infecta bacterias.", correct: false },
+                    { text: "Un organelo celular.", correct: false }
+                ]
+            }
+        ];
+
+        let attempt = 0;
+        const maxAttempts = 3;
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function loadQuiz() {
+            const quizContainer = document.getElementById('quiz');
+            quizContainer.innerHTML = '';
+            quizData.forEach((data, index) => {
+                const questionContainer = document.createElement('div');
+                questionContainer.className = 'question';
+
+                const questionTitle = document.createElement('h3');
+                questionTitle.innerText = `${index + 1}. ${data.question}`;
+                questionContainer.appendChild(questionTitle);
+
+                const optionsList = document.createElement('ul');
+                optionsList.className = 'options';
+
+                shuffle(data.answers).forEach(answer => {
+                    const option = document.createElement('li');
+                    const optionLabel = document.createElement('label');
+                    const optionInput = document.createElement('input');
+                    optionInput.type = 'radio';
+                    optionInput.name = `question${index}`;
+                    optionInput.value = answer.correct;
+                    optionLabel.appendChild(optionInput);
+                    optionLabel.appendChild(document.createTextNode(answer.text));
+                    option.appendChild(optionLabel);
+                    optionsList.appendChild(option);
+                });
+
+                questionContainer.appendChild(optionsList);
+                quizContainer.appendChild(questionContainer);
+            });
+        }
+
+        function submitQuiz() {
+            if (attempt >= maxAttempts) {
+                alert('Has alcanzado el número máximo de intentos.');
+                return;
+            }
+
+            const resultsContainer = document.getElementById('results');
+            const answers = document.querySelectorAll('input[type="radio"]:checked');
+            let score = 0;
+
+            quizData.forEach((data, index) => {
+                const selected = answers[index] ? answers[index].value === 'true' : null;
+                if (selected === true) {
+                    score += 0.4; // Cada respuesta correcta vale 0.4 puntos
+                }
+            });
+
+            score = Math.round(score * 10) / 10; // Redondear a un decimal
+            let feedback = quizData.map((data, index) => {
+                const selected = answers[index] ? answers[index].value === 'true' : null;
+                let result;
+                if (selected === null) {
+                    result = "No contestada";
+                } else if (selected === true) {
+                    result = "Correcta";
+                } else {
+                    result = "Incorrecta";
+                }
+                return `<p>${index + 1}. ${result}</p>`;
+            }).join("");
+
+            resultsContainer.innerHTML = `<h3>Resultados:</h3><p>Puntaje: ${score} / 10</p>${feedback}`;
+
+            attempt++;
+            if (attempt >= maxAttempts) {
+                alert('Has alcanzado el número máximo de intentos.');
+            }
+        }
+
+        document.getElementById('submit').addEventListener('click', submitQuiz);
+
+        loadQuiz();
+    </script>
+</body>
+</html>
